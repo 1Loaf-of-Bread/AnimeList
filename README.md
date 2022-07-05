@@ -14,5 +14,5 @@ AnimeList is a program that allows you to manage all the animes you watched or h
     >Type '4' at the main menu if you wish to view your anime list.
 - Anime list stats
     >Type '5' at the main menu if you wish to check your anime list statistics, like how many animes you have watched/unwatched, and your average anime rating.
-    
-  
+- Exit
+    >Type '6' at the main menu if you wish to exit the program.
