@@ -1,4 +1,3 @@
-from this import s
 from colorama import Fore, init 
 from time import sleep 
 import json
@@ -18,14 +17,13 @@ def checkAnimeListExist():
         with open(f"{cwd}\\Anime List.json", 'w') as file:
             file.close()
         
+        print()
         print(f"{Fore.GREEN}Created Your Anime List!")
         
         sleep(1)
         
-        os.system(cls)
         return 
 
-    os.system(cls)
     return
 
 
@@ -40,7 +38,8 @@ def mainMenu():
         print("#  3. Change Anime Rating   #")
         print("#  4. View Anime List       #")
         print("#  5. Anime List Stats      #")
-        print("#  6. Exit                  #")
+        print("#  6. Unwatched Animes      #")
+        print("#  7. Exit                  #")
         print("#                           #")
         print("#############################")
         print()
@@ -58,6 +57,8 @@ def mainMenu():
         elif uI == "5":
             getAnimeListStats()
         elif uI == "6":
+            listUnwatchedAnimes()
+        elif uI == "7":
             exit()
         else:
             print()
@@ -250,11 +251,31 @@ def viewAnimeList():
     animeListFile = loadFile()
 
     for key in animeListFile:
+        ratingColor = getRatingColor(str(animeListFile[key]['rating']))
+
         print(f"Anime: {key}")
-        print(f"Rating: {animeListFile[key]['rating']}")
+        print(f"Rating: {ratingColor}{animeListFile[key]['rating']}")
         print(f"Watched: {animeListFile[key]['watched']}")
         print("~"*25)
         print()
+
+    print()
+    input("Press ENTER to Return...")
+
+    return
+
+
+def listUnwatchedAnimes():
+    os.system(cls)
+    
+    animeListFile = loadFile()
+
+    for key in animeListFile:
+        if animeListFile[key]['watched'] == False:
+
+            print(f"Anime: {key}")
+            print("~"*15)
+            print()
 
     print()
     input("Press ENTER to Return...")
@@ -284,19 +305,37 @@ def getAnimeListStats():
 
     averageRatingCount = averageRatingCount / divideCount
     averageRatingCount = int(averageRatingCount)
+    averageRatingCount = ratingScale[averageRatingCount]
+
+    ratingColor = getRatingColor(averageRatingCount)
 
     print("~~~~~~ Anime List Statistics ~~~~~~")
     print()
     print(f"Animes Watched: {watchCount}")
     print(f"Animes Unwatched: {unwatchedCount}")
     print()
-    print(f"Average Anime Rating: {ratingScale[averageRatingCount]}")
+    print(f"Average Anime Rating: {ratingColor}{averageRatingCount}")
     print()
     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
     print()
     input("Press ENTER Key to Return...")
 
     return
+
+# ["U", "SSS", "SS", "S", "A", "B", "C", "D", "F"]
+def getRatingColor(rating):
+    if rating == "":
+        return Fore.RED
+    elif ratingScale.index(rating) == 0:
+        return Fore.MAGENTA
+    elif ratingScale.index(rating) >= 1 and ratingScale.index(rating) <= 2:
+        return Fore.CYAN
+    elif ratingScale.index(rating) >= 3 and ratingScale.index(rating) <= 4:
+        return Fore.GREEN
+    elif ratingScale.index(rating) >= 5 and ratingScale.index(rating) <= 6:
+        return Fore.YELLOW
+    elif ratingScale.index(rating) >= 7 and ratingScale.index(rating) <= 8:
+        return Fore.RED
 
 
 def listAnimeRatings():
