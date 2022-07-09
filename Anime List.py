@@ -75,8 +75,8 @@ class AddAnime():
 
         animeListFile = loadFile()
 
-        for key in animeListFile:
-            if str(key) == animeName:
+        for anime in animeListFile:
+            if str(anime) == animeName:
                 print(f"{Fore.RED}ERROR!: {Fore.WHITE}This anime already exists in your anime list")
                 sleep(1)
 
@@ -164,9 +164,9 @@ class RemoveAnime():
             if animeName.lower() == "al":
                 viewAnimeList()
             else:
-                for key in animeListFile:
-                    if animeName == str(key):
-                        del animeListFile[key]
+                for anime in animeListFile:
+                    if animeName == str(anime):
+                        del animeListFile[anime]
                         RemoveAnime.removeAnimePart2(animeListFile, animeName)
                         return
 
@@ -204,8 +204,8 @@ class ChangeAnimeRating():
             if animeName.lower() == "al":
                 viewAnimeList()
             else:
-                for key in animeListFile:
-                    if animeName == str(key):
+                for anime in animeListFile:
+                    if animeName == str(anime):
                         while True:
                             os.system(cls)
 
@@ -229,10 +229,10 @@ class ChangeAnimeRating():
     def changeAnimeRatingPart2(animeName, animeRating):
         animeListFile = loadFile()
 
-        for key in animeListFile:
-            if str(key) == animeName:
-                prevRating = animeListFile[key]['rating']
-                animeListFile[key]['rating'] = animeRating
+        for anime in animeListFile:
+            if str(anime) == animeName:
+                prevRating = animeListFile[anime]['rating']
+                animeListFile[anime]['rating'] = animeRating
 
         with open(f"{cwd}\\Anime List.json", "w", encoding="utf-8") as file:
             file.write(json.dumps(animeListFile, indent=4, sort_keys=True))
@@ -250,12 +250,15 @@ def viewAnimeList():
     
     animeListFile = loadFile()
 
-    for key in animeListFile:
-        ratingColor = getRatingColor(str(animeListFile[key]['rating']))
+    for anime in animeListFile:
+        ratingColor = getRatingColor(str(animeListFile[anime]['rating']))
 
-        print(f"Anime: {key}")
-        print(f"Rating: {ratingColor}{animeListFile[key]['rating']}")
-        print(f"Watched: {animeListFile[key]['watched']}")
+        print(f"Anime: {anime}")
+
+        if animeListFile[anime]['watched'] != False:
+            print(f"Rating: {ratingColor}{animeListFile[anime]['rating']}")
+        
+        print(f"Watched: {animeListFile[anime]['watched']}")
         print("~"*25)
         print()
 
