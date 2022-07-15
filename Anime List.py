@@ -36,10 +36,11 @@ def mainMenu():
         print("#  1. Add Anime             #")
         print("#  2. Remove Anime          #")
         print("#  3. Change Anime Rating   #")
-        print("#  4. View Anime List       #")
-        print("#  5. Anime List Stats      #")
-        print("#  6. Unwatched Animes      #")
-        print("#  7. Exit                  #")
+        print("#  4. Finished an Anime     #")
+        print("#  5. View Anime List       #")
+        print("#  6. Anime List Stats      #")
+        print("#  7. Unwatched Animes      #")
+        print("#  8. Exit                  #")
         print("#                           #")
         print("#############################")
         print()
@@ -53,12 +54,14 @@ def mainMenu():
         elif uI == "3":
             ChangeAnimeRating.changeAnimeRatingPart1()
         elif uI == "4":
-            viewAnimeList()
+            FinishedAnAnime.finishedAnAnimePart1()
         elif uI == "5":
-            getAnimeListStats()
+            viewAnimeList()
         elif uI == "6":
-            listUnwatchedAnimes()
+            getAnimeListStats()
         elif uI == "7":
+            listUnwatchedAnimes()
+        elif uI == "8":
             exit()
         else:
             print()
@@ -211,11 +214,13 @@ class ChangeAnimeRating():
 
                             print("~~~~~ Change Anime Rating ~~~~~")
                             print()
-                            
+                            print("Type 'rs' to view the anime rating scale.")
+                            print()
                             animeRating = input("What would you lke to change the rating to?: ")
-                            animeRating = animeRating.upper()
 
-                            if animeRating in ratingScale:
+                            if animeRating.lower() == "rs":
+                                listAnimeRatings()
+                            elif animeRating.upper() in ratingScale:
                                 ChangeAnimeRating.changeAnimeRatingPart2(animeName, animeRating)
                                 return
                             else:
@@ -245,6 +250,75 @@ class ChangeAnimeRating():
         return 
 
 
+class FinishedAnAnime():
+    def finishedAnAnimePart1():
+        os.system(cls)
+
+        animeListFile = loadFile()
+
+        for anime in animeListFile:
+            if animeListFile[anime]['watched'] == False:
+
+                print(f"Anime: {anime}")
+                print("~"*15)
+
+        print()
+
+        animeInList = False
+        while True:
+            animeName = input("Which anime have you watched?: ")
+
+            for anime in animeListFile:
+                if animeName == str(anime):
+                    animeInList = True 
+
+            if animeInList == True:
+                break
+
+            print(f"{Fore.RED}ERROR!: {Fore.WHITE}Anime not found in anime list.")
+
+        FinishedAnAnime.finishedAnAnimePart2(animeName)
+
+        return
+
+
+    def finishedAnAnimePart2(animeName):
+        animeListFile = loadFile()
+
+        while True:
+            os.system(cls)
+
+            print(f"~~~~~~ Rating Anime: {animeName} ~~~~~~")
+            print()
+            print("Type 'rs' to view the anime rating scale.")
+            print()
+
+            animeRating = input("What would you like to rate this anime?: ")
+
+            if animeRating.lower() == "rs":
+                listAnimeRatings()
+            elif animeRating.upper() in ratingScale:
+                break
+
+        for anime in animeListFile:
+            if str(anime) == animeName:
+                animeListFile[animeName]['rating'] = animeRating
+                animeListFile[animeName]['watched'] = True
+                
+                break
+
+        with open(f"{cwd}\\Anime List.json", "w", encoding="utf-8") as file:
+            file.write(json.dumps(animeListFile, indent=4, sort_keys=True))
+            file.close()
+
+        print()
+        print(f"{Fore.CYAN}Congrats on Finishing '{animeName}'!")
+        print(f"{Fore.CYAN}Anime Rating: {getRatingColor(animeRating)}{animeRating}")
+        sleep(1)
+
+        return 
+
+
 def viewAnimeList():
     os.system(cls)
     
@@ -260,7 +334,6 @@ def viewAnimeList():
         
         print(f"Watched: {animeListFile[anime]['watched']}")
         print("~"*25)
-        print()
 
     print()
     input("Press ENTER to Return...")
@@ -273,12 +346,11 @@ def listUnwatchedAnimes():
     
     animeListFile = loadFile()
 
-    for key in animeListFile:
-        if animeListFile[key]['watched'] == False:
+    for anime in animeListFile:
+        if animeListFile[anime]['watched'] == False:
 
-            print(f"Anime: {key}")
+            print(f"Anime: {anime}")
             print("~"*15)
-            print()
 
     print()
     input("Press ENTER to Return...")
@@ -293,17 +365,17 @@ def getAnimeListStats():
 
     watchCount = 0
     unwatchedCount = 0
-    for key in animeListFile:
-        if animeListFile[key]['watched'] == True:
+    for anime in animeListFile:
+        if animeListFile[anime]['watched'] == True:
             watchCount += 1
         else:
             unwatchedCount += 1
 
     divideCount = 0
     averageRatingCount = 0
-    for key in animeListFile:
-        if animeListFile[key]['rating'] != "":
-            averageRatingCount += ratingScale.index(str(animeListFile[key]['rating']))
+    for anime in animeListFile:
+        if animeListFile[anime]['rating'] != "":
+            averageRatingCount += ratingScale.index(str(animeListFile[anime]['rating']))
             divideCount += 1
 
     averageRatingCount = averageRatingCount / divideCount
