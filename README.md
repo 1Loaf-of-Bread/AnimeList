@@ -10,11 +10,13 @@ AnimeList is a program that allows you to manage all the animes you watched or h
     >Type '2' at the main menu if you wish to remove an anime from your anime list.
 - Change an animes rating
     >Type '3' at the main menu if you wish to change the rating you gave an anime.
+- Finished an Anime
+	>Type '4' at the main menu if you wish to mark an anime as watched in your list, and rate it.
 - View your anime list
-    >Type '4' at the main menu if you wish to view your anime list.
+    >Type '5' at the main menu if you wish to view your anime list.
 - Anime list stats
-    >Type '5' at the main menu if you wish to check your anime list statistics, like how many animes you have watched/unwatched, and your average anime rating.
+    >Type '6' at the main menu if you wish to check your anime list statistics, like how many animes you have watched/unwatched, and your average anime rating.
 - Unwatched Animes
-    >Type '6' at the main menu if you wish to list the animes you have not watched yet.
+    >Type '7' at the main menu if you wish to list the animes you have not watched yet.
 - Exit
-    >Type '7' at the main menu if you wish to exit the program.
+    >Type '8' at the main menu if you wish to exit the program.
