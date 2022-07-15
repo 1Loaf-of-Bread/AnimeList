@@ -1,5 +1,5 @@
 # AnimeList
-AnimeList is a program that allows you to create an anime list, and manage all the animes you watched or haven't watched into a list with your own ratings.
+AnimeList is a program that allows you to create an anime list, and fully manage all the animes you watched or haven't watched into a list with your own ratings.
 
 **Make sure to run the command 'pip install -r requirements.txt' to install all the modules needed for adultphotosets-Downloader to run, brefore using adultphotosets-Downloader.**
 
